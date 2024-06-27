@@ -3,6 +3,12 @@
 // ******
 // multisource BFS
 
+// 벽을 놓았을 때, 최대 안전지역을 알 수 있는 특정 방법을 알 수 없다.
+// 벽을 일일히 놓으면서 최대값을 구해야할 것 같음 --> 완전 탐색
+
+// 벽을 3개 놓고 나서 바이러스가 퍼질 수 있는 영역을 채우고
+// 안전지대 영역 계산하기
+
 import java.util.*;
 
 public class Main {
@@ -15,7 +21,6 @@ public class Main {
     static int N, M, B=0, ans=0;
     static int[][] Map;
     static int[][] blank;
-    static boolean[] possible;
     static boolean[][] visit;
     static int[][] dir = {{1,0},{-1,0},{0,1},{0,-1}};
 
@@ -37,6 +42,7 @@ public class Main {
     static void bfs() {
         Queue<Integer> Q = new LinkedList<>();
         // 모든 바이러스가 시작점으로 가능하니까, 전부 큐에 넣어준다.
+        // bfs를 호출할 때마다 실행되야하니 따로 뺴는 것도 괜찮을 듯
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < M; j++) {
                 visit[i][j] = false;
@@ -88,7 +94,7 @@ public class Main {
     }
 
     static void proceed() {
-        // 모든 벽의 위치를 먼저 모으기
+        // 모든 가능한 영역의 위치를 먼저 모으기
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < M; j++) {
                 if(Map[i][j] == 0) {
