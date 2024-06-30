@@ -109,3 +109,102 @@ public class Main {
         System.out.println(ans);
     }
 }
+
+// 추가 수정
+
+import java.util.*;
+
+public class Main {
+
+    static int N, M;
+    static int[][] Map;
+    static boolean[][] visit;
+    static ArrayList<int[]> Blank = new ArrayList<>();
+    static ArrayList<int[]> Virus= new ArrayList<>();
+    static int ans = 0;
+
+    static int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) {
+        input();
+        proceed();
+    }
+
+
+    static void input() {
+        Scanner scan = new Scanner(System.in);
+        N = scan.nextInt();
+        M = scan.nextInt();
+        Map = new int[N][M];
+        visit = new boolean[N][M];
+        for(int i=0;i<N;i++) {
+            for(int j=0;j<M;j++) {
+                Map[i][j] = scan.nextInt();
+            }
+        }
+    }
+
+    // 바이러스 퍼뜨리기
+    static void bfs() {
+        // 모든 바이러스가 시작점으로 가능하니까, 전부 큐에 넣어준다.
+        Queue<int[]> Q = new LinkedList<int[]>(Virus);
+        visit = new boolean[N][M];
+
+        int pNum = 0;
+        while(!Q.isEmpty()) {
+            int[] virusPoint = Q.poll();
+
+            for(int k=0; k<4; k++) {
+                int nx = virusPoint[0] + dir[k][0];
+                int ny = virusPoint[1] + dir[k][1];
+
+                if(nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
+                if(Map[nx][ny] != 0 || visit[nx][ny]) continue;
+
+                visit[nx][ny] = true;
+                pNum++;
+                Q.add(new int[]{nx, ny});
+            }
+        }
+
+        int temp = Blank.size() - pNum - 3; // 빈 공간 갯수 - 전염 지역 - 3개의 벽
+        ans = Math.max(ans, temp);
+    }
+
+    // idx 번째 빈 캄에 벽을 세울지 말지 결정해야하고, 이전까지 selected_cnt개의 벽을 세웠다.
+    static void dfs(int idx, int selected_cnt) {
+        if(selected_cnt == 3) {
+            bfs();
+            return;
+        }
+        if(idx >= Blank.size()) {
+            return;
+        }
+        int x = Blank.get(idx)[0];
+        int y = Blank.get(idx)[1];
+
+        Map[x][y] = 1;
+        dfs(idx+1, selected_cnt+1);
+
+        Map[x][y] = 0;
+        dfs(idx+1, selected_cnt);
+
+    }
+
+    static void proceed() {
+        // 모든 벽의 위치를 먼저 모으기
+        for(int i=0;i<N;i++) {
+            for(int j=0;j<M;j++) {
+                if(Map[i][j] == 0) {
+                    Blank.add(new int[]{i, j});
+                } else if(Map[i][j] == 2) {
+                    Virus.add(new int[]{i, j});
+                }
+            }
+        }
+
+        dfs(0, 0);
+        System.out.println(ans);
+    }
+}
