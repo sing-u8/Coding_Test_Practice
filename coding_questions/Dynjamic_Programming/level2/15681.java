@@ -6,7 +6,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
-    static Scanner scan = new Scanner(System.in);
+    static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
     static int N, R, Q;
