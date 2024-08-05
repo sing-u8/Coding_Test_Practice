@@ -1,4 +1,4 @@
-// https://www.acmicpc.net/problem/15681
+// https://www.acmicpc.net/problem/1051
 // 트리와 쿼리
 
 import java.io.*;
@@ -9,45 +9,38 @@ public class Main {
     static Scanner scan = new Scanner(System.in);
     static StringBuilder sb = new StringBuilder();
 
-    static int N, R, Q;
-    static ArrayList<Integer>[] con;
-    static int[] Dy;
+    static int N, M;
+    static String[] rect;
+    static int[] lhp, llp, rhp, rlp;
+
+    static void pointInit() {
+        lhp = new int[2];
+        llp = new int[2];
+        rhp = new int[2];
+        rlp = new int[2];
+    }
 
     static void input() {
         N = scan.nextInt();
-        R = scan.nextInt();
-        Q = scan.nextInt();
-        con = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++) {
-            con[i] = new ArrayList<>();
+        M = scan.nextInt();
+        rect = new String[N];
+        scan.nextLine();
+        for (int i = 0; i < N; i++) {
+            rect[i] = scan.nextLine();
         }
-        for (int i = 1; i < N; i++) {
-            int x = scan.nextInt(), y = scan.nextInt();
-            con[x].add(y);
-            con[y].add(x);
-        }
+        pointInit();
     }
 
-    // Dy[x] 를 계산하는 함수
-    static void dfs(int x, int prev) {
-        Dy[x] = 1;
-        for (int y : con[x]) {
-            if (y == prev) continue;
-            dfs(y, x);
-            Dy[x] += Dy[y];
+    static int getSize() {
+        if((lhp[0] == llp[0] && lhp[0] == rhp[0] && lhp[0] == rlp[0])
+                && (lhp[1] == llp[1] && lhp[1] == rhp[1] && lhp[1] == rlp[1])
+        ) {
+            return 1;
         }
     }
 
     static void pro() {
-        Dy = new int[N + 1];
-
-        dfs(R, -1);
-
-        for (int i = 1; i <= Q; i++) {
-            int q = scan.nextInt();
-            sb.append(Dy[q]).append('\n');
-        }
-        System.out.println(sb);
+        System.out.println(rect);
     }
 
     public static void main(String[] args) {
