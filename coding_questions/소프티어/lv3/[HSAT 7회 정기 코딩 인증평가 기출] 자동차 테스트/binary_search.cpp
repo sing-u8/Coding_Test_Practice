@@ -1,3 +1,4 @@
+// https://softeer.ai/practice/6247
 // 이진 탐색을 활용한 방법
 #include <iostream>
 #include <vector>

@@ -1,3 +1,4 @@
+// https://softeer.ai/practice/6248
 import java.io.*;
 import java.util.*;
 
