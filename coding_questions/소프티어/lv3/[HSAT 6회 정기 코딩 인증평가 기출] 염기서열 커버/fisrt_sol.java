@@ -50,8 +50,6 @@ public class Main {
             }
         }
 
-        if(start == -1) return;
-
         // 기존 그룹에 추가 시도
         for(int i = 0; i < groups.size(); i++) {
             if(canAddToGroup(groups.get(i), start)) {
